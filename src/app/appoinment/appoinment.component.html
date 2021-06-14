@@ -3,23 +3,23 @@
 <form [formGroup]="appoinmentform">
 <div class="container">
     <div class="box1">
-<div class="alert alert-primary" role="alert" *ngFor="let item of day" style="width: 200px;">{{item}}    <button type="button" class="btn btn-primary" (click)="addschedule()">+</button></div>
+<div class="alert alert-primary" role="alert" *ngFor="let item of day"  style="width: 200px;">{{item}}    <button type="button" class="btn btn-primary" (click)="addschedule()" >+</button></div>
 </div>
 <div class="box2">
     <div formArrayName="schedule" *ngFor="let list of getControls(); let i=index;">
-    <div [formGroupName]="i" style="display: flex">
+    <div [formGroupName]="i" style="display: flex" >
         <input type="text" formControlName="name" placeholder="Customer name">
         <select formControlName="start_time" (change)="onselect($any($event.target).value)">
-            <ng-container *ngFor="let hours of start_hours" >
+            <ng-container *ngFor="let hours of start_hours ; let i = index" >
                 <option [ngValue]="hours">{{hours}}</option>
             </ng-container>    
         </select>
-        <select formControlName="end_time">
+        <select formControlName="end_time" (change)="onselect($any($event.target).value)">
         <ng-container *ngFor="let hours of end_hours" > 
             <option [ngValue]="hours">{{hours}}</option>
         </ng-container>
          </select> 
-         <button type="button" class="btn btn-secondary" (click)="deleteScheduleGroup(i)">X</button>
+         <button type="button" class="btn btn-secondary" (click)="deleteScheduleGroup(i)" *ngIf="isdiasplay">X</button>
     </div>    
     </div>
 </div>
