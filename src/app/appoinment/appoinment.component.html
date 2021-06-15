@@ -9,17 +9,17 @@
     <div formArrayName="schedule" *ngFor="let list of getControls(); let i=index;">
     <div [formGroupName]="i" style="display: flex" >
         <input type="text" formControlName="name" placeholder="Customer name">
-        <select formControlName="start_time" (change)="onselect($any($event.target).value)">
-            <ng-container *ngFor="let hours of start_hours ; let i = index" >
-                <option [ngValue]="hours">{{hours}}</option>
-            </ng-container>    
+        <select formControlName="start_time" (change)="onselect('start_time',$any($event.target).value,i)">
+            <ng-container *ngFor="let hours of data[i].start ; let ind = index" >
+                <option [ngValue]="hours" >{{hours}}</option> 
+            </ng-container>      
         </select>
-        <select formControlName="end_time" (change)="onselect($any($event.target).value)">
-        <ng-container *ngFor="let hours of end_hours" > 
-            <option [ngValue]="hours">{{hours}}</option>
+        <select formControlName="end_time" (change)="onselect('end_time',$any($event.target).value,i)">
+            <ng-container *ngFor="let hours of data[i].end ; let ind = index" >
+            <option  [ngValue]="hours">{{hours}}</option>
         </ng-container>
          </select> 
-         <button type="button" class="btn btn-secondary" (click)="deleteScheduleGroup(i)" *ngIf="isdiasplay">X</button>
+         <button type="button" class="btn btn-secondary" (click)="deleteScheduleGroup(i)" >X</button>
     </div>    
     </div>
 </div>
