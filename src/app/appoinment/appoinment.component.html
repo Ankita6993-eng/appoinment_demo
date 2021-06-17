@@ -3,21 +3,19 @@
 <form [formGroup]="appoinmentform">
 <div class="container">
     <div class="box1">
-<div class="alert alert-primary" role="alert" *ngFor="let item of day"  style="width: 200px;">{{item}}    <button type="button" class="btn btn-primary" (click)="addschedule()" >+</button></div>
+<div class="alert alert-primary" role="alert" *ngFor="let item of day ;let i=index;" [class.active]="activeDaySelection === i" (click)="daysSelectListClick(i, item)" style="width: 200px;">{{item}}    </div>
 </div>
 <div class="box2">
-    <div formArrayName="schedule" *ngFor="let list of getControls(); let i=index;">
+    <div formArrayName="schedule" *ngFor="let list of appoinmentform.get('schedule')['controls']; let i=index;">
+        
     <div [formGroupName]="i" style="display: flex" >
+        <button type="button" class="btn btn-primary" (click)="addschedule(i)" >+</button>
         <input type="text" formControlName="name" placeholder="Customer name">
         <select formControlName="start_time" (change)="onselect('start_time',$any($event.target).value,i)">
-            <ng-container *ngFor="let hours of data[i].start ; let ind = index" >
-                <option [ngValue]="hours" >{{hours}}</option> 
-            </ng-container>      
+                <option *ngFor="let hours of data[i].start ; let ind = index"  [ngValue]="hours" >{{hours}}</option>     
         </select>
         <select formControlName="end_time" (change)="onselect('end_time',$any($event.target).value,i)">
-            <ng-container *ngFor="let hours of data[i].end ; let ind = index" >
-            <option  [ngValue]="hours">{{hours}}</option>
-        </ng-container>
+            <option *ngFor="let hours of data[i].end ; let ind = index"  [ngValue]="hours">{{hours}}</option>
          </select> 
          <button type="button" class="btn btn-secondary" (click)="deleteScheduleGroup(i)" >X</button>
     </div>    

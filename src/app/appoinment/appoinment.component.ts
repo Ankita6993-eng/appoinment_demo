@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, FormControl, Validators } from '@angular/forms';
 import * as moment from "moment";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,20 +12,24 @@ import * as moment from "moment";
 export class AppoinmentComponent implements OnInit {
   public day=["Monday","Tuesday","Wensday","Thursday","Friday"];
   appoinmentform:FormGroup|any;
-  schedule : FormArray|any;
+  schedule :any;
   isdiasplay:boolean=true
  start_hours:any = [];
  end_hours:any = [];
  hours:any=[]
  data:any=[]
-  constructor(public fb:FormBuilder) {
+
+ activeDaySelection: number|any;
+ selectedDay: any;
+ clearForm: FormArray|any;
+  constructor(public fb:FormBuilder,private router: Router) {
    
    }
 
   ngOnInit(): void {
     this.appoinmentform=this.fb.group({
      // day:this.day,
-      schedule:new FormArray([])
+      schedule:new FormArray([]),
     });
     
 
@@ -40,7 +45,7 @@ export class AppoinmentComponent implements OnInit {
       end_selected:null
     }
   }
-  createschedule():FormGroup|any{
+  createschedule(){
     return this.fb.group({
       name:[''],
       start_time:this.patchDynamicFormBlockValue(),
@@ -51,6 +56,7 @@ export class AppoinmentComponent implements OnInit {
 
   onselect(time: string,val:any,ind:any){
     console.log(val)
+    if(this.data[ind].start.length){
     if(time === "start_time"){
       console.log('ind', ind);
       console.log('', this.start_hours[ind]);
@@ -86,7 +92,21 @@ export class AppoinmentComponent implements OnInit {
          console.log('this.data[ind].end_selected', this.data[ind].end_selected);
          //console.log(' this.data[ind].start11111',  this.data[ind].start);
       }
+    } 
   }
+
+  daysSelectListClick(index: number, value: string) {
+    console.log('value', value);
+    console.log('index', index);
+    
+    this.activeDaySelection = index;
+    console.log(this.activeDaySelection);
+    this.selectedDay = value;
+    console.log(this.selectedDay);
+    this.clearForm = this.appoinmentform.get('schedule') as FormArray;
+    this.clearForm.clear();
+    this.addschedule(index);
+}
 
   getControls() {
     return (<FormArray>this.appoinmentform.get('schedule')).controls;
@@ -94,11 +114,11 @@ export class AppoinmentComponent implements OnInit {
 
   
 
-  addschedule(){
-    this.schedule=this.appoinmentform.get('schedule') as FormArray;
+  addschedule(ind?:any){
+    this.schedule=this.appoinmentform.get('schedule') as FormArray
     this.schedule.push(this.createschedule());
     //console.log('this.schedule', this.schedule);
-   this.isdiasplay=true;
+   
    
   //  if(this.schedule.length > 0 && !this.appoinmentform.value ){
   //    console.log('this.', this.schedule);
