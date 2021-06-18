@@ -3,19 +3,23 @@
 <form [formGroup]="appoinmentform">
 <div class="container">
     <div class="box1">
-<div class="alert alert-primary" role="alert" *ngFor="let item of day ;let i=index;" [class.active]="activeDaySelection === i" (click)="daysSelectListClick(i, item)" style="width: 200px;">{{item}}    </div>
+<div class="alert alert-primary" role="alert" *ngFor="let item of day ;let i=index;" [class.active]="activeDaySelection === i" (click)="daysSelectListClick(i, item)" style="width: 200px; cursor: pointer;" >{{item}}    </div>
+<!-- <div formControlName="day ">
+    <input  type='text' />
+</div> -->
 </div>
 <div class="box2">
+
     <div formArrayName="schedule" *ngFor="let list of appoinmentform.get('schedule')['controls']; let i=index;">
         
     <div [formGroupName]="i" style="display: flex" >
         <button type="button" class="btn btn-primary" (click)="addschedule(i)" >+</button>
         <input type="text" formControlName="name" placeholder="Customer name">
-        <select formControlName="start_time" (change)="onselect('start_time',$any($event.target).value,i)">
-                <option *ngFor="let hours of data[i].start ; let ind = index"  [ngValue]="hours" >{{hours}}</option>     
+        <select formControlName="start_time"  (change)="onselect('Start_Time',$any($event.target).value,i)">
+                <option *ngFor="let hours of start_hours ; let ind = index" [ngValue]="hours">{{hours}}</option>     
         </select>
-        <select formControlName="end_time" (change)="onselect('end_time',$any($event.target).value,i)">
-            <option *ngFor="let hours of data[i].end ; let ind = index"  [ngValue]="hours">{{hours}}</option>
+        <select formControlName="end_time" (change)="onselect('End_Time',$any($event.target).value,i)">
+            <option *ngFor="let hours of end_hours ; let ind = index"  [ngValue]="hours">{{hours}}</option>
          </select> 
          <button type="button" class="btn btn-secondary" (click)="deleteScheduleGroup(i)" >X</button>
     </div>    
@@ -24,4 +28,5 @@
 </div>
 </form>
 <button type="button" class="btn btn-primary" id="btn" (click)="onclick()" >Downloads</button>
-<pre *ngIf="isdiasplay">{{appoinmentform.value | json }}</pre>
+<pre>{{daySelected | json}}
+<p>{{jsonarrayvalue | json }}</p></pre>
